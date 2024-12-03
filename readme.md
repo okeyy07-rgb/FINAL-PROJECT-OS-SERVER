@@ -6,9 +6,6 @@ Pada Repository tersebut berisi dokumentasi pengerjaan saya pada saat memberikan
 ## Daftar Isi
 - [Layanan Server Nginx](#Layanan-Nginx)
 - [Layanan Server Apache2](#instalasi)
-- [Penggunaan](#penggunaan)
-- [Kontribusi](#kontribusi)
-- [Lisensi](#lisensi)
 
 
 # 1. Layanan Nginx
