@@ -100,14 +100,35 @@ Hubungkan konfigurasi virtual host ke /etc/nginx/sites-enabled/server1:
 ```bash
 sudo ln -s /etc/nginx/sites-available/server1 /etc/nginx/sites-enabled/
 ```
+### Langkah 6: Konfigurasi Global Nginx
+Edit konfigurasi global Nginx (/etc/nginx/nginx.conf) dan tambahkan limit_req_zone di dalam blok http:
+'''bash
+http {
+    limit_req_zone $binary_remote_addr zone=one:10m rate=1r/s;
 
-### Langkah 6: Restart Nginx
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    # Gzip Settings
+    gzip on;
+    gzip_comp_level 2;
+    gzip_min_length 512;
+    gzip_proxied any;
+    gzip_vary on;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;
+}
+'''
+
+### Langkah 7: Restart Nginx
 Restart Nginx untuk menerapkan perubahan:
 ```bash
 sudo systemctl restart nginx
 ```
 
-### Langkah 7: Tes Konfigurasi
+### Langkah 8: Tes Konfigurasi
 Cek apakah situs Anda dapat diakses dengan mengetik 192.168.100.232 (sesuai nama domain yang sudah anda buat) di peramban web.
 ![App Screenshot](hasil1.png)
 
