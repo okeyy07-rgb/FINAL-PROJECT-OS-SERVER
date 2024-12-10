@@ -70,7 +70,7 @@ git clone https://github.com/okeyy07-rgb/cybershild.github.io.git
 
 Buat konfigurasi virtual host di /etc/nginx/sites-available/server1:
 ```bash
-sudo nano /etc/nginx/sites-available/your_domain
+sudo nano /etc/nginx/sites-available/server1
 ```
 
 Tambahkan konfigurasi berikut:
@@ -78,20 +78,27 @@ Tambahkan konfigurasi berikut:
 server {
     listen 80;
     server_name 192.168.100.232;
-
     root /var/www/server1/cybershild.github.io;
     index index.html;
 
     location / {
-        try_files \$uri \$uri/ =404;
+        auth_basic "Restricted Content";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+        try_files $uri $uri/ =404;
+
+        ## RATE LIMITING ##
+        limit_req zone=one burst=5 nodelay;
     }
 }
 ```
+disini saya menambahkan service, dimana pada saat mengakses WEB, akan diminta memasukkan Username dan juga Password. kemudian juga 
+saya menambahkan service "Rate Limiting" yang mana Rate Limiting berguna untuk membatasi jumlah permintaan yang dapat dilakukan oleh 
+klien dalam periode waktu tertentu untuk mencegah serangan DDoS atau penyalahgunaan layanan.
 
 ### Langkah 5: Aktifkan Virtual Host
 Hubungkan konfigurasi virtual host ke /etc/nginx/sites-enabled/server1:
 ```bash
-sudo ln -s /etc/nginx/sites-available/your_domain /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/server1 /etc/nginx/sites-enabled/
 ```
 
 ### Langkah 6: Restart Nginx
