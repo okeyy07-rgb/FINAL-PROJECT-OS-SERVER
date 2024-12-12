@@ -95,12 +95,24 @@ disini saya menambahkan service, dimana pada saat mengakses WEB, akan diminta me
 saya menambahkan service "Rate Limiting" yang mana Rate Limiting berguna untuk membatasi jumlah permintaan yang dapat dilakukan oleh 
 klien dalam periode waktu tertentu untuk mencegah serangan DDoS atau penyalahgunaan layanan.
 
-### Langkah 5: Aktifkan Virtual Host
+### Langkah 5: Install htpasswd untuk membuat file autentikasi
+```bash
+sudo apt-get install apache2-utils
+```
+Buat file autentikasi di direktori yang diinginkan. Misalnya di /etc/nginx/.htpasswd:
+```bash
+sudo htpasswd -c /etc/nginx/.htpasswd nama_pengguna
+```
+"nama_pengguna" di ganti dengan nama yang anda inginkan. setelah itu setting username dan password yang anda inginkan, 
+yang mana nantinya akan muncul pada saat anda mengakses Web melalui layanan nginx.
+
+
+### Langkah 6: Aktifkan Virtual Host
 Hubungkan konfigurasi virtual host ke /etc/nginx/sites-enabled/server1:
 ```bash
 sudo ln -s /etc/nginx/sites-available/server1 /etc/nginx/sites-enabled/
 ```
-### Langkah 6: Konfigurasi Global Nginx
+### Langkah 7: Konfigurasi Global Nginx
 Edit konfigurasi global Nginx (/etc/nginx/nginx.conf) dan tambahkan limit_req_zone di dalam blok http:
 '''bash
 http {
@@ -122,13 +134,13 @@ http {
 }
 '''
 
-### Langkah 7: Restart Nginx
+### Langkah 8: Restart Nginx
 Restart Nginx untuk menerapkan perubahan:
 ```bash
 sudo systemctl restart nginx
 ```
 
-### Langkah 8: Tes Konfigurasi
+### Langkah 9: Tes Konfigurasi
 Cek apakah situs Anda dapat diakses dengan mengetik 192.168.100.232 (sesuai nama domain yang sudah anda buat) di peramban web.
 ![App Screenshot](hasil1.png)
 
